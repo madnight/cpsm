@@ -15,6 +15,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 import vim
 
@@ -37,6 +38,7 @@ def ctrlp_match():
                 max_threads=int(vim.eval("g:cpsm_max_threads")),
                 query_inverting_delimiter=vim.eval("g:cpsm_query_inverting_delimiter"),
                 regex_line_prefix=vim.eval("s:regex_line_prefix"),
+                not_arg=True,
                 unicode=int(vim.eval("g:cpsm_unicode")))
         # Escape backslashes and ".
         vim.command("let s:results = [%s]" % ",".join(
@@ -44,6 +46,14 @@ def ctrlp_match():
         vim.command("let s:regexes = [%s]" % ",".join(
                 map(_escape_and_quote, regexes)))
     except Exception as ex:
+        ex_str = str(ex)
+        if "function takes at most" in ex_str:
+            # Most likely due to a new parameter being added to
+            # cpsm_py.ctrlp_match.
+            ex_str = "rebuild cpsm by running %s (%s)" % (
+                    os.path.normpath(os.path.join(
+                            script_dir, "..", "install.sh")),
+                    ex_str)
         vim.command("let s:results = [%s]" % _escape_and_quote(
-                "ERROR: " + str(ex)))
+                "ERROR: " + ex_str))
         vim.command("let s:regexes = []")

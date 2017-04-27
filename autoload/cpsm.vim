@@ -69,9 +69,6 @@ endif
 function cpsm#CtrlPMatch(items, str, limit, mmode, ispath, crfile, regex)
   if s:status == 0
     return ['ERROR: failed to load cpsm module']
-  elseif s:status == 1
-    return ['ERROR: cpsm built with version of Python not supported by Vim']
-  endif
   let s:regex_line_prefix = '> '
   if exists('g:ctrlp_line_prefix')
     let s:regex_line_prefix = g:ctrlp_line_prefix

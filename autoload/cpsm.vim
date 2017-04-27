@@ -67,9 +67,7 @@ if s:status == 0 && has('python')
 endif
 
 function cpsm#CtrlPMatch(items, str, limit, mmode, ispath, crfile, regex)
-  if !has('python3') && !has('python')
-    return ['ERROR: cpsm requires Vim built with Python or Python3 support']
-  elseif s:status == 0
+  if s:status == 0
     return ['ERROR: failed to load cpsm module']
   elseif s:status == 1
     return ['ERROR: cpsm built with version of Python not supported by Vim']
